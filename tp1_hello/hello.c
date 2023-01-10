@@ -3,28 +3,28 @@
 #include <avr/eeprom.h>
 
 //------------------------------------------------
-// Programme "hello world" pour carte à puce
+// Programme "hello world" pour carte Ã  puce
 // 
 //------------------------------------------------
 
 
-// déclaration des fonctions d'entrée/sortie définies dans "io.c"
+// dÃ©claration des fonctions d'entrÃ©e/sortie dÃ©finies dans "io.c"
 void sendbytet0(uint8_t b);
 uint8_t recbytet0(void);
 
 // variables globales en static ram
-uint8_t cla, ins, p1, p2, p3;	// entête de commande
+uint8_t cla, ins, p1, p2, p3;	// entÃªte de commande
 uint8_t sw1, sw2;		// status word
 
-int taille;		// taille des données introduites -- est initialisé à 0 avant la boucle
-#define MAXI 128	// taille maxi des données lues
-uint8_t data[MAXI];	// données introduites
+int taille;		// taille des donnÃ©es introduites -- est initialisÃ© Ã  0 avant la boucle
+#define MAXI 128	// taille maxi des donnÃ©es lues
+uint8_t data[MAXI];	// donnÃ©es introduites
 
-// Procédure qui renvoie l'ATR
+// ProcÃ©dure qui renvoie l'ATR
 void atr(uint8_t n, char* hist)
 {
-  sendbytet0(0x3b);	// définition du protocole
-  n = 0x60 + n;
+  sendbytet0(0x3b);	// dÃ©finition du protocole
+  n = 0x70 + n;
   sendbytet0(n);		// nombre d'octets d'historique
   sendbytet0(0x1b); 
   sendbytet0(0x00);
@@ -37,12 +37,12 @@ void atr(uint8_t n, char* hist)
 }
 
 
-// émission de la version
-// t est la taille de la chaîne sv
+// Ã©mission de la version
+// t est la taille de la chaÃ®ne sv
 void version(int t, char* sv)
 {
     	int i;
-    	// vérification de la taille
+    	// vÃ©rification de la taille
     	if (p3!=t)
     	{
         	sw1=0x6c;	// taille incorrecte
@@ -50,7 +50,7 @@ void version(int t, char* sv)
         	return;
     	}
 	sendbytet0(ins);	// acquittement
-	// émission des données
+	// Ã©mission des donnÃ©es
 	for(i=0;i<p3;i++)
     	{
         	sendbytet0(sv[i]);
@@ -59,11 +59,11 @@ void version(int t, char* sv)
 }
 
 
-// commande de réception de données
+// commande de rÃ©ception de donnÃ©es
 void intro_data()
 {
     	int i;
-     	// vérification de la taille
+     	// vÃ©rification de la taille
     	if (p3>MAXI)
         {
           sw1=0x6c;	// P3 incorrect
@@ -76,7 +76,7 @@ void intro_data()
         {
           data[i]=recbytet0();
         }
-      taille=p3; 		// mémorisation de la taille des données lues
+      taille=p3; 		// mÃ©morisation de la taille des donnÃ©es lues
       sw1=0x90;
 }
 
@@ -107,7 +107,7 @@ void intro_perso()
 {
 	char buffer[MAX_PERSO];
 	int i;
-	// contrôle p3
+	// contrÃ´le p3
 	if (p3>MAX_PERSO)
     {
       sw1=0x6c;
@@ -118,12 +118,12 @@ void intro_perso()
 	sendbytet0(ins);
 	// traitement de la commande
 	for (i=0;i<p3;i++)
-    {	// lecture des données
+    {	// lecture des donnÃ©es
       buffer[i]=recbytet0();
     }
 	// recopie en eeprom
 	eeprom_write_block(buffer,ee_perso,p3);
-	// écriture de la taille
+	// Ã©criture de la taille
 	eeprom_write_word(&ee_taille,p3);
 	// status word
 	sw1=0x90;
@@ -171,11 +171,11 @@ int main(void)
   atr(11,"Hello scard");
 
 	taille=0;
-	sw2=0;		// pour éviter de le répéter dans toutes les commandes
+	sw2=0;		// pour Ã©viter de le rÃ©pÃ©ter dans toutes les commandes
   // boucle de traitement des commandes
   for(;;)
   	{
-      // lecture de l'entête
+      // lecture de l'entÃªte
       cla=recbytet0();
       ins=recbytet0();
       p1=recbytet0();
