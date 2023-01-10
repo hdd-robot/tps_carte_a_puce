@@ -32,7 +32,7 @@ void atr()
 	int i;
     
     sendbytet0(0x3b);	// définition du protocole
-    uint8_t n = 0x60 + size_atr;
+    uint8_t n = 0x70 + size_atr;
     sendbytet0(n);		// nombre d'octets d'historique
     sendbytet0(0x1b); 
     sendbytet0(0x00);
