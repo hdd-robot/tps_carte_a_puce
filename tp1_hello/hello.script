@@ -1,0 +1,20 @@
+# script pour scriptor
+# usage 
+# $ scriptor < hello.script
+# $ scriptor hello.script
+# $ cat hello.script | scriptor
+reset
+# lecture de la version
+# avec une taille erronée
+80 00 00 00 05
+# avec la taille correcte
+80 00 00 00 $sw2
+# introduction de données
+80 01 00 00 (%d36) "0123456789abcdefghijklmnopqrtsuvwxyz" 
+# lecture des données
+80 02 0 0 0
+80 02 0 0 $sw2
+
+# end
+
+

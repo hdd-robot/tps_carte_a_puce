@@ -1,0 +1,21 @@
+# script de test
+# commentaire
+
+
+
+reader 0
+
+#reset
+
+80 00 23 45 0
+say -x $sw2
+80 00 00 00 $sw2
+
+
+80 01 00 00 05 "ABCDE"  # comment
+
+80 02 00 00 02
+
+80 02 00 00 05
+
+exit

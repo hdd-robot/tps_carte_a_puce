@@ -1,0 +1,38 @@
+# script pour scriptor
+# usage 
+# $ scriptor < hello.script
+# $ scriptor hello.script
+# $ cat hello.script | scriptor
+reset
+little_endian
+# lecture de la version
+# avec une taille erronée
+81 00 00 00 00
+# avec la taille correcte
+81 00 00 00 $sw2
+# intro personnalisation
+81 01 00 00 (%d8) "Vladimir" 
+# lecture perso
+81 02 00 00 00
+81 02 00 00 $sw2
+
+#lecture du solde
+81 03 00 00 02
+
+# crédit
+81 04 00 00 02 10 27
+#lecture du solde
+81 03 00 00 02
+
+# debit
+81 05 00 00 02 e8 03
+# lecture du solde
+81 03 00 00 02
+# affichage du solde en format décimal
+say -d $reply;2
+# débit de 1 euro
+81 05 00 00 02 (%d100;2)
+
+# end
+
+
