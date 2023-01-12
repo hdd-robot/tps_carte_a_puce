@@ -24,12 +24,15 @@ uint8_t data[MAXI];	// données introduites
 void atr(uint8_t n, char* hist)
 {
   sendbytet0(0x3b);	// définition du protocole
-  n = 0x70 + n;
-  sendbytet0(n);		// nombre d'octets d'historique
-  sendbytet0(0x1b); 
-  sendbytet0(0x00);
-
   
+  n = 0xF0 + n  +1 ;
+  sendbytet0(n);		// nombre d'octets d'historique
+  sendbytet0(0x01); //TA 
+  sendbytet0(0x05); //TB
+  sendbytet0(0x05); //TC 
+  sendbytet0(0x00); //TD protocole t=0
+  sendbytet0(0x00); //CAT 
+
   while(n--)		// Boucle d'envoi des octets d'historique
     {
       sendbytet0(*hist++);
@@ -218,4 +221,3 @@ int main(void)
   	}
   	return 0;
 }
-
