@@ -21,7 +21,7 @@ uint8_t cla, ins, p1, p2, p3;  // header de commande
 uint8_t sw1, sw2;              // status word
 
 
-#define size_atr 6
+#define size_atr 0x6
 const char atr_str[size_atr] PROGMEM = "bourse";
 
 
@@ -32,10 +32,13 @@ void atr()
 	int i;
     
     sendbytet0(0x3b);	// définition du protocole
-    uint8_t n = 0x70 + size_atr;
+    uint8_t n = 0xF0 + size_atr +1 ;
     sendbytet0(n);		// nombre d'octets d'historique
-    sendbytet0(0x1b); 
-    sendbytet0(0x00);
+    sendbytet0(0x01); //TA 
+    sendbytet0(0x05); //TB
+    sendbytet0(0x05); //TC 
+    sendbytet0(0x00); //TD protocole t=0
+    sendbytet0(0x00); //CAT 
     
 	for (i=0;i<size_atr;i++)		// Boucle d'envoi des octets d'historique
 	{
@@ -354,5 +357,4 @@ int main(void)
   	}
   	return 0;
 }
-
 
